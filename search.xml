@@ -3,7 +3,8 @@
   <entry>
     <title>作用域和闭包</title>
     <url>/2020/04/17/%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E9%97%AD%E5%8C%85/</url>
-    <content><![CDATA[<a id="more"></a>
+    <content><![CDATA[<p>作用域保存自由变量，作用域链用来自由变量的查找。闭包对数据保护，不被访问。</p>
+<a id="more"></a>
 
 <h1 id="作用域和闭包"><a href="#作用域和闭包" class="headerlink" title="作用域和闭包"></a>作用域和闭包</h1><ol>
 <li>变量提升的理解<ol>
@@ -56,22 +57,8 @@
 <p>场景</p>
 <ol>
 <li>函数作为返回值</li>
-<li>函数作为参数传递<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> b = <span class="number">200</span>;</span><br><span class="line">	<span class="comment">//返回一个函数</span></span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(b) <span class="comment">//自由变量，父作用寻找</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> fn1 = fn()</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn2</span>(<span class="params">fn</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> b =<span class="number">600</span>;</span><br><span class="line">	fn()</span><br><span class="line">&#125;</span><br><span class="line">fn2(fn1) <span class="comment">//200</span></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-</li>
+<li>函数作为参数传递<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> b = <span class="number">200</span>;</span><br><span class="line">	<span class="comment">//返回一个函数</span></span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(b) <span class="comment">//自由变量，父作用寻找</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> fn1 = fn()</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn2</span>(<span class="params">fn</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> b =<span class="number">600</span>;</span><br><span class="line">	fn()</span><br><span class="line">&#125;</span><br><span class="line">fn2(fn1) <span class="comment">//200</span></span><br></pre></td></tr></table></figure></li>
 </ol>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> fn1 = <span class="literal">undefined</span>;</span><br><span class="line">fn() </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;&#125; <span class="comment">//声明</span></span><br><span class="line">fn1() <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> fn1 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;<span class="comment">//表达式</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//全局 </span></span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">100</span>;</span><br><span class="line">fn(<span class="string">'zhangsan'</span>)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">	<span class="comment">//函数</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">console</span>.log(<span class="keyword">this</span>) <span class="comment">//window</span></span><br><span class="line">	<span class="built_in">console</span>.log(<span class="built_in">arguments</span>) <span class="comment">//参数的集合体</span></span><br><span class="line"></span><br><span class="line">	age = <span class="number">20</span>;</span><br><span class="line">	<span class="built_in">console</span>.log(name,age) <span class="comment">//zhangsan，20</span></span><br><span class="line">	<span class="keyword">var</span> age;</span><br><span class="line"></span><br><span class="line">	bar(<span class="number">100</span>)</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params">num</span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(num)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>js基础</category>
@@ -453,8 +440,8 @@ await必须跟promise实例
         <category>总结</category>
       </categories>
       <tags>
-        <tag>Class</tag>
         <tag>ES6</tag>
+        <tag>Class</tag>
       </tags>
   </entry>
   <entry>
@@ -567,8 +554,8 @@ await必须跟promise实例
         <category>总结</category>
       </categories>
       <tags>
-        <tag>ES6</tag>
         <tag>模块化</tag>
+        <tag>ES6</tag>
       </tags>
   </entry>
   <entry>
