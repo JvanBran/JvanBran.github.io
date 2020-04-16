@@ -41,6 +41,15 @@
 </li>
 </ol>
 ]]></content>
+      <categories>
+        <category>面试</category>
+        <category>总结</category>
+      </categories>
+      <tags>
+        <tag>代码质量</tag>
+        <tag>错误监控</tag>
+        <tag>代码检查</tag>
+      </tags>
   </entry>
   <entry>
     <title>js运行机制</title>
@@ -58,6 +67,7 @@
 ]]></content>
       <categories>
         <category>面试</category>
+        <category>总结</category>
       </categories>
       <tags>
         <tag>渲染机制</tag>
@@ -113,6 +123,7 @@
 ]]></content>
       <categories>
         <category>面试</category>
+        <category>总结</category>
       </categories>
       <tags>
         <tag>渲染机制</tag>
@@ -142,6 +153,7 @@
 ]]></content>
       <categories>
         <category>面试</category>
+        <category>总结</category>
       </categories>
       <tags>
         <tag>渲染机制</tag>
@@ -183,6 +195,7 @@ await必须跟promise实例
 需要babel-polyfill(兼容)</code></pre>]]></content>
       <categories>
         <category>面试</category>
+        <category>总结</category>
       </categories>
       <tags>
         <tag>Promise</tag>
@@ -218,6 +231,7 @@ await必须跟promise实例
 ]]></content>
       <categories>
         <category>面试</category>
+        <category>总结</category>
       </categories>
       <tags>
         <tag>Class</tag>
@@ -331,6 +345,7 @@ await必须跟promise实例
 ]]></content>
       <categories>
         <category>面试</category>
+        <category>总结</category>
       </categories>
       <tags>
         <tag>ES6</tag>
