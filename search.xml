@@ -1,6 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>作用域和闭包</title>
+    <url>/2020/04/17/%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E9%97%AD%E5%8C%85/</url>
+    <content><![CDATA[<a id="more"></a>
+
+<h1 id="作用域和闭包"><a href="#作用域和闭包" class="headerlink" title="作用域和闭包"></a>作用域和闭包</h1><ol>
+<li>变量提升的理解<ol>
+<li>变量定义</li>
+<li>函数声明（表达式）</li>
+</ol>
+</li>
+<li>this几种不同的使用场景<ol>
+<li>作为构造函数执行</li>
+<li>作为对象属性执行</li>
+<li>作为普通函数执行</li>
+<li>call apply bind</li>
+</ol>
+</li>
+<li>创建10<a>标签，点击的时候弹出对应的序号</li>
+<li>如何理解作用域<br> 自由变量<br> 作用域链，自由变量的查找<br> 闭包</li>
+<li>实际开发中闭包的应用<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isFirstLoad</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> _list = []</span><br><span class="line">	<span class="keyword">return</span> funtion(id)&#123;</span><br><span class="line">		<span class="keyword">if</span>(_list.indexOf(id)&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			_list.push(id)</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> firstLoad = isFirstLoad()</span><br><span class="line">firstLoad(<span class="number">10</span>) <span class="comment">//true</span></span><br><span class="line">firstLoad(<span class="number">10</span>) <span class="comment">//false</span></span><br><span class="line">firstLoad(<span class="number">120</span>) <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="执行上下文"><a href="#执行上下文" class="headerlink" title="执行上下文"></a>执行上下文</h2><p>函数表达式vs函数声明</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">100</span>; <span class="comment">// var a; 声明</span></span><br><span class="line">fn(<span class="string">'zhangsan'</span>) <span class="comment">//zhangsan，20</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params">name</span>)</span>&#123; <span class="comment">// function fn; 声明</span></span><br><span class="line">	age = <span class="number">20</span>;</span><br><span class="line">	<span class="built_in">console</span>.log(name,age) </span><br><span class="line">	<span class="keyword">var</span> age; <span class="comment">// var age 声明</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>范围：一段script或者函数</li>
+<li>全局：变量定义、函数声明</li>
+<li>函数：变量定义、函数声明、this、arguments</li>
+</ol>
+<p>js执行之前会将变量定义、函数声明、this、arguments取出来</p>
+<h2 id="this"><a href="#this" class="headerlink" title="this"></a>this</h2><p>this要在执行时才能确认值，定义时无法确认</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;</span><br><span class="line">	name : <span class="string">'A'</span>,</span><br><span class="line">	fn:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">a.fn() <span class="comment">// this === a  A</span></span><br><span class="line">a.fn.call(&#123;<span class="attr">name</span>:<span class="string">'B'</span>&#125;) <span class="comment">// this ===&#123;name:'B'&#125; B</span></span><br><span class="line"><span class="keyword">var</span> fn1 = a.fnfn1() </span><br><span class="line">fn1()<span class="comment">// this === window  undefined</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>作为构造函数执行<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.name = name</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> f = <span class="keyword">new</span> Foo(<span class="string">'zhangsan'</span>)</span><br></pre></td></tr></table></figure></li>
+<li>作为对象属性执行<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;</span><br><span class="line">	name : <span class="string">'A'</span>,</span><br><span class="line">	fn:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">a.fn() <span class="comment">//A</span></span><br></pre></td></tr></table></figure></li>
+<li>作为普通函数执行<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">&#125;</span><br><span class="line">fn() <span class="comment">//window</span></span><br></pre></td></tr></table></figure></li>
+<li>call apply bind<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn1</span>(<span class="params">name,age</span>)</span>&#123;</span><br><span class="line">	alert(name)</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">&#125;</span><br><span class="line">fn1.call(&#123;<span class="attr">x</span>:<span class="number">100</span>&#125;,<span class="string">'zhangsan'</span>,<span class="number">20</span>) <span class="comment">// alert &#123;x:100&#125; undefined</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn2</span>(<span class="params">name,age</span>)</span>&#123;</span><br><span class="line">	alert(name)</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">&#125;</span><br><span class="line">fn2.apply(&#123;<span class="attr">x</span>:<span class="number">100</span>&#125;,[<span class="string">'zhangsan'</span>,<span class="number">20</span>]) <span class="comment">// alert &#123;x:100&#125; undefined</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fn3 = <span class="function"><span class="keyword">function</span>(<span class="params">name,age</span>)</span>&#123;</span><br><span class="line">	alert(name)</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">&#125;.bind(&#123;<span class="attr">y</span>:<span class="number">100</span>&#125;)</span><br><span class="line">fn3(<span class="string">'zhangsan'</span>,<span class="number">20</span>) <span class="comment">// alert &#123;x:100&#125; undefined</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><p>没有块级作用域</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">	<span class="keyword">var</span> name = <span class="string">'zhangsan'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(name)</span><br></pre></td></tr></table></figure>
+
+<p>只有函数和全局作用域</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1000</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> a = <span class="number">200</span>;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'fn'</span>,a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'global'</span>,a)</span><br><span class="line">fn()</span><br></pre></td></tr></table></figure>
+
+<h2 id="作用域链"><a href="#作用域链" class="headerlink" title="作用域链"></a>作用域链</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1000</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> b = <span class="number">200</span>;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">fn1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">var</span> c= <span class="number">400</span>;</span><br><span class="line">		<span class="built_in">console</span>.log(a)</span><br><span class="line">		<span class="built_in">console</span>.log(b)</span><br><span class="line">		<span class="built_in">console</span>.log(c)</span><br><span class="line">	&#125;</span><br><span class="line">	fn1()</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line">fn()</span><br></pre></td></tr></table></figure>
+<h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> b = <span class="number">200</span>;</span><br><span class="line">	<span class="comment">//返回一个函数</span></span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(b) <span class="comment">//自由变量，父作用寻找</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> fn1 = fn()</span><br><span class="line"><span class="keyword">var</span> b = <span class="number">100</span></span><br><span class="line">fn1() <span class="comment">// 100</span></span><br></pre></td></tr></table></figure>
+
+<p>场景</p>
+<ol>
+<li>函数作为返回值</li>
+<li>函数作为参数传递<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> b = <span class="number">200</span>;</span><br><span class="line">	<span class="comment">//返回一个函数</span></span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(b) <span class="comment">//自由变量，父作用寻找</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> fn1 = fn()</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn2</span>(<span class="params">fn</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> b =<span class="number">600</span>;</span><br><span class="line">	fn()</span><br><span class="line">&#125;</span><br><span class="line">fn2(fn1) <span class="comment">//200</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> fn1 = <span class="literal">undefined</span>;</span><br><span class="line">fn() </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;&#125; <span class="comment">//声明</span></span><br><span class="line">fn1() <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> fn1 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;<span class="comment">//表达式</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//全局 </span></span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">100</span>;</span><br><span class="line">fn(<span class="string">'zhangsan'</span>)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">	<span class="comment">//函数</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">console</span>.log(<span class="keyword">this</span>) <span class="comment">//window</span></span><br><span class="line">	<span class="built_in">console</span>.log(<span class="built_in">arguments</span>) <span class="comment">//参数的集合体</span></span><br><span class="line"></span><br><span class="line">	age = <span class="number">20</span>;</span><br><span class="line">	<span class="built_in">console</span>.log(name,age) <span class="comment">//zhangsan，20</span></span><br><span class="line">	<span class="keyword">var</span> age;</span><br><span class="line"></span><br><span class="line">	bar(<span class="number">100</span>)</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params">num</span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(num)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>js基础</category>
+      </categories>
+      <tags>
+        <tag>作用域和闭包</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>原型和原型链</title>
+    <url>/2020/04/16/%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE/</url>
+    <content><![CDATA[<p>当试图得到一个对象的某个属性时，如果这个对象本身没有这个属性，那么回去他的<strong>proto</strong>(隐式原型)即他的构造函数prototype（显式原型）中寻找</p>
+<a id="more"></a>
+
+<h1 id="原型和原型链"><a href="#原型和原型链" class="headerlink" title="原型和原型链"></a>原型和原型链</h1><ol>
+<li><p>如何准确判断一个变量是数组类型</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = []</span><br><span class="line">arr <span class="keyword">instanceof</span> <span class="built_in">Array</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>写一个原型链继承的例子</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Elem</span>(<span class="params">id</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.elem = <span class="built_in">document</span>.getElementById(id)</span><br><span class="line">&#125;</span><br><span class="line">Elem.prototype.html = <span class="function"><span class="keyword">function</span>(<span class="params">val</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> elem = <span class="keyword">this</span>.elem</span><br><span class="line">	<span class="keyword">if</span>(val)&#123;</span><br><span class="line">		elem.innerHML = val</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>; <span class="comment">//链式调用</span></span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> elem.innerHML</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">elem.prototype.on = <span class="function"><span class="keyword">function</span>(<span class="params">type,fn</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> elem = <span class="keyword">this</span>.elem</span><br><span class="line">	elem.addEventListener(type.fn)</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>; <span class="comment">//链式调用</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> div1 = <span class="keyword">new</span> Elem(<span class="string">'div'</span>)</span><br><span class="line">div1.html(<span class="string">'&lt;p&gt;hello word&lt;/p&gt;'</span>)</span><br><span class="line">div1.on(<span class="string">'click'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">div1.html(<span class="string">'&lt;p&gt;hello word&lt;/p&gt;'</span>).on(<span class="string">'click'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	alert(<span class="string">'alert'</span>)</span><br><span class="line">&#125;).html(<span class="string">'&lt;p&gt;hello word1&lt;/p&gt;'</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p>描述new一个对象的过程</p>
+<ol>
+<li>创建一个新对象</li>
+<li>this指向这个新对象</li>
+<li>执行代码，即对this赋值</li>
+<li>返回this</li>
+</ol>
+</li>
+<li><p>zepto（或其他框架）源码中如如何使用原型链</p>
+</li>
+</ol>
+<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><ol>
+<li>大写开头的都是构造函数</li>
+<li>构造函数类似一个模版</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params">name,age</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.name = name</span><br><span class="line">	<span class="keyword">this</span>.age = age</span><br><span class="line">	<span class="keyword">this</span>.class = <span class="string">'class-1'</span></span><br><span class="line">	<span class="comment">// return this </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> f = <span class="keyword">new</span> Foo(<span class="string">'Jvan'</span>,<span class="number">20</span>)</span><br><span class="line"><span class="keyword">var</span> f1 = <span class="keyword">new</span> Foo(<span class="string">'Jvan1'</span>,<span class="number">21</span>) <span class="comment">//创建多个</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="构造函数-扩展"><a href="#构造函数-扩展" class="headerlink" title="构造函数-扩展"></a>构造函数-扩展</h2><ol>
+<li>var a = {} 其实就是var a = new Object()的语法糖</li>
+<li>var a = [] 其实就是var a = new Array()的语法糖</li>
+<li>function Foo(){…} 其实就是var Foo = new Funciton()的语法糖</li>
+<li>用instanceof判断一个函数是否是一个变量的构造函数</li>
+</ol>
+<h2 id="原型规则和示例"><a href="#原型规则和示例" class="headerlink" title="原型规则和示例"></a>原型规则和示例</h2><p>原型规则是学习原型链的基础</p>
+<p>五条原型规则</p>
+<ol>
+<li><p>所有的引用类型（数组、对象、函数），都具有对象的特性，即可自由扩展属性（null意外）</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;&#125;; obj.a = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">var</span> arr = []; arr.a = <span class="number">100</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">fn.a = <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>所有引用类型（数组、对象、函数），都有一个<strong>proto</strong>(隐式原型)属性，属性值是一个普通的对象（null意外）</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(obj.__proto__)</span><br><span class="line"><span class="built_in">console</span>.log(arr.__proto__)</span><br><span class="line"><span class="built_in">console</span>.log(fn.__proto__)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>所有的函数，都有一个属性prototype（显式原型），属性值也是一个普通对象</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(obj.prototype)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>所有引用类型（数组、对象、函数），都有一个<strong>proto</strong>(隐式原型)属性指向他的构造函数的prototype（显式原型）属性值</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(obj.__proto__ === <span class="built_in">Object</span>.prototype)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当试图得到一个对象的某个属性时，如果这个对象本身没有这个属性，那么回去他的<strong>proto</strong>(隐式原型)即他的构造函数prototype（显式原型）中寻找。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">funciton Foo(anme)&#123;</span><br><span class="line">	<span class="keyword">this</span>.name = name</span><br><span class="line">&#125;</span><br><span class="line">Foo.prototype.alertName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	alert(<span class="keyword">this</span>.name)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> f = <span class="keyword">new</span> Foo(<span class="string">'Jvan'</span>)</span><br><span class="line">f.printName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</span><br><span class="line">&#125;</span><br><span class="line">f.printName();<span class="comment">//自身有</span></span><br><span class="line">f.alertName();<span class="comment">//自身没有从构造函数找</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> item <span class="keyword">in</span> f)&#123;</span><br><span class="line">	<span class="comment">//高级浏览器forin屏蔽来自原型的属性</span></span><br><span class="line">	<span class="keyword">if</span>(f.hasOwnProperty(item))&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(item)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h2><p><img src="/assets/yuanxinglian/2020-04-17_00-33-21.png" alt=""></p>
+<h2 id="instanceof"><a href="#instanceof" class="headerlink" title="instanceof"></a>instanceof</h2><p>判断引用类型属于哪个构造函数的方法</p>
+<p>f instanceof Foo的判断逻辑是:f的<strong>proto</strong>(隐式原型)一层一层往上，能否对应到Foo.prototype（显式原型）</p>
+]]></content>
+      <categories>
+        <category>js基础</category>
+      </categories>
+      <tags>
+        <tag>原型和原型链</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>变量类型和计算</title>
+    <url>/2020/04/16/%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B%E5%92%8C%E8%AE%A1%E7%AE%97/</url>
+    <content><![CDATA[<p>变量类型:值类型（undefined、string、number、boolean）引用类型（object）</p>
+<a id="more"></a>
+
+<h1 id="变量类型和计算"><a href="#变量类型和计算" class="headerlink" title="变量类型和计算"></a>变量类型和计算</h1><ol>
+<li><p>js中使用typeof能得到哪些类型<br> 只能区分值类型</p>
+<ol>
+<li>undefined: undefined </li>
+<li>string:    ‘123’</li>
+<li>number:    123</li>
+<li>object:   {}、[]、null 引用类型</li>
+<li>function: console.log</li>
+<li>boolean:    true</li>
+</ol>
+</li>
+<li><p>何时使用===何时使用==</p>
+<ol>
+<li>强等于类型及值<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(obj.a == <span class="literal">null</span>)&#123;</span><br><span class="line">	obj.a === <span class="literal">null</span> || obj === <span class="literal">undefined</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>js中有哪些内置函数</p>
+<ol>
+<li>Object</li>
+<li>Array</li>
+<li>Boolean</li>
+<li>Number</li>
+<li>String</li>
+<li>Funtion</li>
+<li>Date</li>
+<li>RegExp</li>
+<li>Error<br>内置对象（JSON、Math）</li>
+</ol>
+</li>
+<li><p>js变量按照存储方式区分为哪些类型，并描述特点</p>
+<ol>
+<li>值类型<br> 值过多会占用内存</li>
+<li>引用类型<br> 引用类型包含：对象、数组、函数<br> 可以无限拓展属性</li>
+</ol>
+</li>
+<li><p>如何理解JSON<br> JSON是一个JS对象</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">JSON</span>.stringify()</span><br><span class="line"><span class="built_in">JSON</span>.parse()</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<h2 id="变量类型"><a href="#变量类型" class="headerlink" title="变量类型"></a>变量类型</h2><ol>
+<li>值类型vs引用类型 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;值类型</span><br><span class="line">var a &#x3D; 100;</span><br><span class="line">var b &#x3D; a; &#x2F;&#x2F;创建了b&#x3D;100</span><br><span class="line">a &#x3D; 200;</span><br><span class="line">console.log(b) &#x2F;&#x2F;100</span><br><span class="line">&#x2F;&#x2F;引用类型 </span><br><span class="line">var a &#x3D; &#123;age:20&#125;</span><br><span class="line">var b &#x3D; a; &#x2F;&#x2F;创建了一个指针</span><br><span class="line">b.age &#x3D; 21;</span><br><span class="line">console.log(a.age) &#x2F;&#x2F; 21</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="变量计算"><a href="#变量计算" class="headerlink" title="变量计算"></a>变量计算</h2><ol>
+<li><p>强制类型转换</p>
+<ol>
+<li>字符串拼接 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">100</span>+<span class="number">10</span> <span class="comment">//110</span></span><br><span class="line"><span class="keyword">var</span> b = <span class="number">100</span>+<span class="string">'10'</span> <span class="comment">//10010</span></span><br></pre></td></tr></table></figure></li>
+<li>== 运算符 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="number">100</span> == <span class="string">'100'</span> <span class="comment">// true</span></span><br><span class="line"><span class="number">0</span> == <span class="string">''</span> <span class="comment">// true</span></span><br><span class="line"><span class="literal">null</span> == nudefined <span class="comment">// true</span></span><br></pre></td></tr></table></figure></li>
+<li>if语句 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="literal">true</span> <span class="comment">// true</span></span><br><span class="line"><span class="keyword">if</span>(a)&#123;&#125;</span><br><span class="line"><span class="keyword">var</span> b = <span class="number">100</span> <span class="comment">// true</span></span><br><span class="line"><span class="keyword">if</span>(b)&#123;&#125;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">''</span> <span class="comment">// false</span></span><br><span class="line"><span class="keyword">if</span>(a)&#123;&#125;</span><br></pre></td></tr></table></figure></li>
+<li>逻辑运算符 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">10</span> &amp;&amp; <span class="number">0</span>) <span class="comment">// 0 10=true 0=false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">''</span>|| <span class="string">'abc'</span>) <span class="comment">// 'abc' ''=false 'abc'=true</span></span><br><span class="line"><span class="built_in">console</span>.log(!<span class="built_in">window</span>.abc) <span class="comment">// true window.abc=false !window.abc= true</span></span><br><span class="line"><span class="comment">//判断一个变量会被当成true还是false</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">100</span></span><br><span class="line"><span class="built_in">console</span>.log(!!a) <span class="comment">// true a=true !a=false !!a= true</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>typeof运算符详解</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>js基础</category>
+      </categories>
+      <tags>
+        <tag>变量类型和计算</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>错误监控</title>
     <url>/2020/04/16/%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7/</url>
     <content><![CDATA[<p>代码质量管理其实就是错误监控及代码检查。</p>
@@ -52,8 +271,8 @@
       </tags>
   </entry>
   <entry>
-    <title>js运行机制</title>
-    <url>/2020/04/16/js%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/</url>
+    <title>运行机制</title>
+    <url>/2020/04/16/%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/</url>
     <content><![CDATA[<p>js是单线程，任务分成同步任务、异步任务。先执行同步任务，在执行异步任务。异步任务通过Event-loop实现。同步任务没有执行完成，异步队列不会执行。</p>
 <a id="more"></a>
 
