@@ -20,15 +20,20 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Jvan&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/tags/%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE/index.html">
+  <meta name="description" content="知其然，知其所以然。分析其中的原因，才能找到解决方案。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信开发调试">
+<meta property="og:url" content="http://yoursite.com/2020/04/21/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E8%B0%83%E8%AF%95/index.html">
 <meta property="og:site_name" content="Jvan&#39;s Blog">
+<meta property="og:description" content="知其然，知其所以然。分析其中的原因，才能找到解决方案。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-21T13:18:02.000Z">
+<meta property="article:modified_time" content="2020-04-28T16:13:11.598Z">
 <meta property="article:author" content="Jvan">
+<meta property="article:tag" content="微信开发调试">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/tags/%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE/">
+<link rel="canonical" href="http://yoursite.com/2020/04/21/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E8%B0%83%E8%AF%95/">
 
 
 <script id="page-configurations">
@@ -36,11 +41,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false
+    isPost : true
   };
 </script>
 
-  <title>标签: 原型和原型链 | Jvan's Blog</title>
+  <title>微信开发调试 | Jvan's Blog</title>
   
 
 
@@ -175,51 +180,114 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">原型和原型链
-          <small>标签</small>
-        </h1>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/21/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E8%B0%83%E8%AF%95/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jvan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jvan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微信开发调试
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-21 21:18:02" itemprop="dateCreated datePublished" datetime="2020-04-21T21:18:02+08:00">2020-04-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-29 00:13:11" itemprop="dateModified" datetime="2020-04-29T00:13:11+08:00">2020-04-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" itemprop="url" rel="index"><span itemprop="name">奇技淫巧</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2020</h1>
+        <blockquote class="blockquote-center">
+            <p>知其然，知其所以然。分析其中的原因，才能找到解决方案。</p>
+
+          </blockquote>
+
+<a id="more"></a>
+
+<p>微信公众号开发中基于安全策略必须使用域名才能访问，其实第一次碰到这个问题，了解之后发现和浏览器同源策略的解决方案是类似的。</p>
+<p>实际开发生产中，总是会不可避免的碰到，需要临时修改微信公众号修改内容的需求。</p>
+<p>当然，也有几种通用解决方案。</p>
+<p>使用natapp、使用ngrok之类的。</p>
+<p>这些方案的起点都比较高，如果前端开发的能力有限就需要多端配合。</p>
+<p>需要备案域名、服务器之类，时间和成本就会加剧。</p>
+<p>如此，我们开始分析微信公众号本地调试中微信公众号做的一些安全策略。</p>
+<p>首先，基于B/S的基本盘。我们基本可以判断，微信公众号的基本逻辑判断应该是，判断当前URL是否符合在服务器中备案的一致。</p>
+<p>核心就出现了，浏览器地址栏中的url是否和服务器中的备案地址是否一致。</p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-04-16T23:49:06+08:00"
-              content="2020-04-16">
-          04-16
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E8%B0%83%E8%AF%95/" rel="tag"># 微信开发调试</a>
+          </div>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/04/16/%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE/" itemprop="url">
-            <span itemprop="name">原型和原型链</span>
-          </a>
-      </h2>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/17/%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E9%97%AD%E5%8C%85/" rel="prev" title="作用域和闭包">
+      <i class="fa fa-chevron-left"></i> 作用域和闭包
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/28/typescript/" rel="next" title="typescript">
+      typescript <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-    </div>
   </div>
-  
-  
-  
-
-  
-
 
 
           </div>
